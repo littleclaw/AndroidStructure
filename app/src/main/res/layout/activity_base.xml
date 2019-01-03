@@ -19,7 +19,7 @@
             android:gravity="center"
             android:text="@string/title"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/size_20"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -31,7 +31,7 @@
             android:id="@+id/base_back"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="@dimen/size_13"
+            android:padding="13dp"
             android:src="@mipmap/back"
             android:tint="@android:color/white" />
 
@@ -39,7 +39,7 @@
             android:id="@+id/base_right_icon2"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="@dimen/size_13"
+            android:padding="13dp"
             android:src="@mipmap/add"
             android:tint="@android:color/white"
             android:visibility="gone"
@@ -49,7 +49,7 @@
             android:id="@+id/base_right_icon1"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="@dimen/size_13"
+            android:padding="13dp"
             android:src="@mipmap/more"
             android:tint="@android:color/white"
             android:visibility="gone"
@@ -62,7 +62,7 @@
             android:gravity="center"
             android:text="@string/make_sure"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/size_17"
+            android:textSize="17dp"
             android:visibility="visible"
             app:layout_constraintRight_toRightOf="@+id/base_title" />
 

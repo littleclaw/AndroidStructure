@@ -133,10 +133,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         View view = context.getWindow().peekDecorView();
         if (view != null) {
             InputMethodManager inputmanger;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.CUPCAKE) {
-                inputmanger = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
+            inputmanger = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
