@@ -35,7 +35,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 隐藏返回键
      */
-    private void hideBack() {
+    protected void hideBack() {
         baseBack.setVisibility(View.GONE);
     }
 
@@ -63,7 +63,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      *
      * @param title 标题的文本
      */
-    public void setTitle(String title) {
+    protected void setTitle(String title) {
         baseTitle.setText(title);
     }
 
