@@ -5,6 +5,8 @@ import android.os.Looper;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 /**
  * <pre>
  *     author: Blankj
@@ -233,7 +235,7 @@ public class ToastUtils {
      * @param duration 显示时长
      */
     private static void showToast(@StringRes int resId, int duration) {
-        showToast(Utils.getContext().getResources().getText(resId).toString(), duration);
+        showToast(YcyApplication.getInstance().getResources().getText(resId).toString(), duration);
     }
 
     /**
@@ -244,7 +246,7 @@ public class ToastUtils {
      * @param args     参数
      */
     private static void showToast(@StringRes int resId, int duration, Object... args) {
-        showToast(String.format(Utils.getContext().getResources().getString(resId), args), duration);
+        showToast(String.format(YcyApplication.getInstance().getResources().getString(resId), args), duration);
     }
 
     /**
@@ -267,7 +269,7 @@ public class ToastUtils {
     private static void showToast(CharSequence text, int duration) {
         if (isJumpWhenMore) cancelToast();
         if (sToast == null) {
-            sToast = Toast.makeText(Utils.getContext(), text, duration);
+            sToast = Toast.makeText(YcyApplication.getInstance(), text, duration);
         } else {
             sToast.setText(text);
             sToast.setDuration(duration);

@@ -12,6 +12,8 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 /**
  * <pre>
  *     author: Blankj
@@ -32,7 +34,7 @@ public class ScreenUtils {
      * @return 屏幕宽px
      */
     public static int getScreenWidth() {
-        WindowManager windowManager = (WindowManager) Utils.getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) YcyApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();// 创建了一张白纸
         windowManager.getDefaultDisplay().getMetrics(dm);// 给白纸设置宽高
         return dm.widthPixels;
@@ -44,7 +46,7 @@ public class ScreenUtils {
      * @return 屏幕高px
      */
     public static int getScreenHeight() {
-        WindowManager windowManager = (WindowManager) Utils.getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) YcyApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();// 创建了一张白纸
         windowManager.getDefaultDisplay().getMetrics(dm);// 给白纸设置宽高
         return dm.heightPixels;
@@ -79,7 +81,7 @@ public class ScreenUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isLandscape() {
-        return Utils.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        return YcyApplication.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     /**
@@ -88,7 +90,7 @@ public class ScreenUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isPortrait() {
-        return Utils.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        return YcyApplication.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 
     /**
@@ -154,7 +156,7 @@ public class ScreenUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isScreenLock() {
-        KeyguardManager km = (KeyguardManager) Utils.getContext()
+        KeyguardManager km = (KeyguardManager) YcyApplication.getInstance()
                 .getSystemService(Context.KEYGUARD_SERVICE);
         return km.inKeyguardRestrictedInputMode();
     }
@@ -166,7 +168,7 @@ public class ScreenUtils {
      * @param duration 时长
      */
     public static void setSleepDuration(int duration) {
-        Settings.System.putInt(Utils.getContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, duration);
+        Settings.System.putInt(YcyApplication.getInstance().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, duration);
     }
 
     /**
@@ -176,7 +178,7 @@ public class ScreenUtils {
      */
     public static int getSleepDuration() {
         try {
-            return Settings.System.getInt(Utils.getContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
+            return Settings.System.getInt(YcyApplication.getInstance().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
             return -123;

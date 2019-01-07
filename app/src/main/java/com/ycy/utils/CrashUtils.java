@@ -5,6 +5,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -63,16 +65,16 @@ public class CrashUtils
     public boolean init() {
         if (mInitialized) return true;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            File baseCache = Utils.getContext().getExternalCacheDir();
+            File baseCache = YcyApplication.getInstance().getExternalCacheDir();
             if (baseCache == null) return false;
             crashDir = baseCache.getPath() + File.separator + "crash" + File.separator;
         } else {
-            File baseCache = Utils.getContext().getCacheDir();
+            File baseCache = YcyApplication.getInstance().getCacheDir();
             if (baseCache == null) return false;
             crashDir = baseCache.getPath() + File.separator + "crash" + File.separator;
         }
         try {
-            PackageInfo pi = Utils.getContext().getPackageManager().getPackageInfo(Utils.getContext().getPackageName(), 0);
+            PackageInfo pi = YcyApplication.getInstance().getPackageManager().getPackageInfo(YcyApplication.getInstance().getPackageName(), 0);
             versionName = pi.versionName;
             versionCode = pi.versionCode;
         } catch (PackageManager.NameNotFoundException e) {

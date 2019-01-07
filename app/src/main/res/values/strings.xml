@@ -2,4 +2,9 @@
     <string name="app_name">AutoPromote</string>
     <string name="title">MyTitle</string>
     <string name="make_sure">确定</string>
+    
+    <string name="main_nav_main">首页</string>
+    <string name="main_nav_guide">导航</string>
+    <string name="main_nav_tasks">任务</string>
+    <string name="main_nav_user">我的</string>
 </resources>

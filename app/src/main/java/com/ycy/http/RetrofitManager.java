@@ -2,7 +2,6 @@ package com.ycy.http;
 
 import android.os.Environment;
 
-import com.ycy.baseapp.base.YcyApplication;
 import com.ycy.http.interceptor.LoggingInterceptor;
 import com.ycy.ui.BuildConfig;
 
@@ -20,8 +19,6 @@ public final class RetrofitManager {
     //OkHttp--设置链接与写入超时时间
     private static final int CONNECT_TIMEOUT = 10;
 
-    //定义同步的OkHttpClient
-    private OkHttpClient mOkHttpClient;
     private Retrofit mRetrofit;
     //定义RetrofitManager
     private static RetrofitManager instance = null;
@@ -37,7 +34,7 @@ public final class RetrofitManager {
     //创建及配置Retrofit
     private RetrofitManager() {
         //创建OkHttpClient并配置
-        mOkHttpClient = new OkHttpClient.Builder()
+        OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
                 .cache(initOkHttpCache()) //配置缓存
                 .addInterceptor(new LoggingInterceptor()) //添加拦截器
                 .retryOnConnectionFailure(true)

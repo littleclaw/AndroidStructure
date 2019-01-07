@@ -10,6 +10,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -589,7 +591,7 @@ public class ConvertUtils {
      * @return px值
      */
     public static int dp2px(float dpValue) {
-        final float scale = Utils.getContext().getResources().getDisplayMetrics().density;
+        final float scale = YcyApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
@@ -600,7 +602,7 @@ public class ConvertUtils {
      * @return dp值
      */
     public static int px2dp(float pxValue) {
-        final float scale = Utils.getContext().getResources().getDisplayMetrics().density;
+        final float scale = YcyApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
@@ -611,7 +613,7 @@ public class ConvertUtils {
      * @return px值
      */
     public static int sp2px(float spValue) {
-        final float fontScale = Utils.getContext().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = YcyApplication.getInstance().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
@@ -622,7 +624,7 @@ public class ConvertUtils {
      * @return sp值
      */
     public static int px2sp(float pxValue) {
-        final float fontScale = Utils.getContext().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = YcyApplication.getInstance().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 }

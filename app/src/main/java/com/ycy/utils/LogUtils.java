@@ -3,6 +3,8 @@ package com.ycy.utils;
 import android.os.Environment;
 import android.util.Log;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -42,9 +44,9 @@ public class LogUtils {
      */
     public static void init(boolean logSwitch, boolean log2FileSwitch, char logFilter, String tag) {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            dir = Utils.getContext().getExternalCacheDir().getPath() + File.separator;
+            dir = YcyApplication.getInstance().getExternalCacheDir().getPath() + File.separator;
         } else {
-            dir = Utils.getContext().getCacheDir().getPath() + File.separator;
+            dir = YcyApplication.getInstance().getCacheDir().getPath() + File.separator;
         }
         LogUtils.logSwitch = logSwitch;
         LogUtils.log2FileSwitch = log2FileSwitch;
@@ -60,9 +62,9 @@ public class LogUtils {
      */
     public static Builder getBuilder() {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            dir = Utils.getContext().getExternalCacheDir().getPath() + File.separator + "log" + File.separator;
+            dir = YcyApplication.getInstance().getExternalCacheDir().getPath() + File.separator + "log" + File.separator;
         } else {
-            dir = Utils.getContext().getCacheDir().getPath() + File.separator + "log" + File.separator;
+            dir = YcyApplication.getInstance().getCacheDir().getPath() + File.separator + "log" + File.separator;
         }
         return new Builder();
     }

@@ -1,5 +1,7 @@
 package com.ycy.utils;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 import java.io.File;
 
 /**
@@ -23,7 +25,7 @@ public class CleanUtils {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalCache() {
-        return FileUtils.deleteFilesInDir(Utils.getContext().getCacheDir());
+        return FileUtils.deleteFilesInDir(YcyApplication.getInstance().getCacheDir());
     }
 
     /**
@@ -33,7 +35,7 @@ public class CleanUtils {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalFiles() {
-        return FileUtils.deleteFilesInDir(Utils.getContext().getFilesDir());
+        return FileUtils.deleteFilesInDir(YcyApplication.getInstance().getFilesDir());
     }
 
     /**
@@ -43,7 +45,7 @@ public class CleanUtils {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalDbs() {
-        return FileUtils.deleteFilesInDir(Utils.getContext().getFilesDir().getParent() + File.separator + "databases");
+        return FileUtils.deleteFilesInDir(YcyApplication.getInstance().getFilesDir().getParent() + File.separator + "databases");
     }
 
     /**
@@ -54,7 +56,7 @@ public class CleanUtils {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalDbByName( String dbName) {
-        return Utils.getContext().deleteDatabase(dbName);
+        return YcyApplication.getInstance().deleteDatabase(dbName);
     }
 
     /**
@@ -64,7 +66,7 @@ public class CleanUtils {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalSP() {
-        return FileUtils.deleteFilesInDir(Utils.getContext().getFilesDir().getParent() + File.separator + "shared_prefs");
+        return FileUtils.deleteFilesInDir(YcyApplication.getInstance().getFilesDir().getParent() + File.separator + "shared_prefs");
     }
 
     /**
@@ -74,7 +76,7 @@ public class CleanUtils {
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanExternalCache() {
-        return SDCardUtils.isSDCardEnable() && FileUtils.deleteFilesInDir(Utils.getContext().getExternalCacheDir());
+        return SDCardUtils.isSDCardEnable() && FileUtils.deleteFilesInDir(YcyApplication.getInstance().getExternalCacheDir());
     }
 
     /**

@@ -3,6 +3,8 @@ package com.ycy.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 import java.util.Map;
 
 /**
@@ -25,7 +27,7 @@ public class SPUtils {
      * @param spName  spName
      */
     public SPUtils(String spName) {
-        sp = Utils.getContext().getSharedPreferences(spName, Context.MODE_PRIVATE);
+        sp = YcyApplication.getInstance().getSharedPreferences(spName, Context.MODE_PRIVATE);
         editor = sp.edit();
         editor.apply();
     }

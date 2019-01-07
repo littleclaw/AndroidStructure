@@ -29,6 +29,8 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -679,7 +681,7 @@ public class ImageUtils {
         canvas.scale(scale, scale);
         canvas.drawBitmap(scaleBitmap, 0, 0, paint);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            scaleBitmap = renderScriptBlur(Utils.getContext(), scaleBitmap, radius);
+            scaleBitmap = renderScriptBlur(YcyApplication.getInstance(), scaleBitmap, radius);
         } else {
             scaleBitmap = stackBlur(scaleBitmap, (int) radius, recycle);
         }

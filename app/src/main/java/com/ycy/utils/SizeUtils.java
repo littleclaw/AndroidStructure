@@ -5,6 +5,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 /**
  * <pre>
  *     author: Blankj
@@ -26,7 +28,7 @@ public class SizeUtils {
      * @return px值
      */
     public static int dp2px(float dpValue) {
-        final float scale = Utils.getContext().getResources().getDisplayMetrics().density;
+        final float scale = YcyApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
@@ -37,7 +39,7 @@ public class SizeUtils {
      * @return dp值
      */
     public static int px2dp( float pxValue) {
-        final float scale = Utils.getContext().getResources().getDisplayMetrics().density;
+        final float scale = YcyApplication.getInstance().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
@@ -48,7 +50,7 @@ public class SizeUtils {
      * @return px值
      */
     public static int sp2px(float spValue) {
-        final float fontScale = Utils.getContext().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = YcyApplication.getInstance().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
@@ -59,7 +61,7 @@ public class SizeUtils {
      * @return sp值
      */
     public static int px2sp( float pxValue) {
-        final float fontScale = Utils.getContext().getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = YcyApplication.getInstance().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 

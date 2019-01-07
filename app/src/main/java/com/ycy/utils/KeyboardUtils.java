@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.ycy.baseapp.base.YcyApplication;
+
 /**
  * <pre>
  *     author: Blankj
@@ -86,7 +88,7 @@ public class KeyboardUtils {
         edit.setFocusable(true);
         edit.setFocusableInTouchMode(true);
         edit.requestFocus();
-        InputMethodManager imm = (InputMethodManager) Utils.getContext()
+        InputMethodManager imm = (InputMethodManager) YcyApplication.getInstance()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(edit, 0);
     }
@@ -95,7 +97,7 @@ public class KeyboardUtils {
      * 切换键盘显示与否状态
      */
     public static void toggleSoftInput() {
-        InputMethodManager imm = (InputMethodManager) Utils.getContext()
+        InputMethodManager imm = (InputMethodManager) YcyApplication.getInstance()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }

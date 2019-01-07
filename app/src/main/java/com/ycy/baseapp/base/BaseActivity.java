@@ -1,5 +1,6 @@
 package com.ycy.baseapp.base;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.ycy.ui.R;
 
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener{
 
     public Activity context;
@@ -113,7 +116,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      * @param layoutId 布局id
      */
     public void setBaseContentView(int layoutId) {
-        ((ScrollView) findViewById(R.id.base_scroll_view)).setFillViewport(true);
+//        (FrameLayout)findViewById(R.id.base_scroll_view).setFillViewport(true);
         ConstraintLayout layout = findViewById(R.id.base_main_layout);
         LayoutInflater inflater = getLayoutInflater();
         final View view = inflater.inflate(layoutId, null);
