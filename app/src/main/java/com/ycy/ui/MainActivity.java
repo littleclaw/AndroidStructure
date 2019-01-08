@@ -1,7 +1,9 @@
 package com.ycy.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -14,7 +16,10 @@ import android.view.MenuItem;
 import com.ycy.ui.guide.GuideFragment;
 import com.ycy.ui.main.MainPageFragment;
 import com.ycy.ui.tasks.TaskFragment;
+import com.ycy.ui.user.LoginActivity;
 import com.ycy.ui.user.UserFragment;
+import com.ycy.utils.SnackbarUtils;
+import com.ycy.utils.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -27,18 +32,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static final int INDEX_TASKS = 2;
     public static final int INDEX_USER = 3;
 
+    public static final int LOGIN_REQUEST_CODE = 9;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initViews();
+        setUpPagerView();
+    }
+
+    private void initViews() {
         mMainPageViewPager = findViewById(R.id.main_viewpager);
         mMainPageBottomNavigationView = findViewById(R.id.main_bottom_navigation_view);
         mMainPageBottomNavigationView.inflateMenu(R.menu.nav_menu);
         mMainPageBottomNavigationView.setOnNavigationItemSelectedListener(this);
         mMainPageBottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
-
-        setUpPagerView();
     }
 
     private void setUpPagerView(){
@@ -68,6 +78,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mMainPageBottomNavigationView.getMenu().getItem(index).setChecked(true);
     }
 
+    private void notifyUserLogin(){
+        //TODO
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
@@ -84,8 +98,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 setSelectedItem(INDEX_USER);
                 break;
                 default:
-
         }
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == LOGIN_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                notifyUserLogin();
+            }else {
+                ToastUtils.showShortToast("取消登录");
+            }
+        }
+    }
+
+    public void requestLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivityForResult(intent, LOGIN_REQUEST_CODE);
     }
 }

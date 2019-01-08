@@ -7,4 +7,6 @@
     <string name="main_nav_guide">导航</string>
     <string name="main_nav_tasks">任务</string>
     <string name="main_nav_user">我的</string>
+
+    <string name="guide_query_hint">搜索应用</string>
 </resources>
