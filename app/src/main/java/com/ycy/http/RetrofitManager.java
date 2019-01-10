@@ -8,9 +8,11 @@ import com.ycy.ui.BuildConfig;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class RetrofitManager {
@@ -47,7 +49,7 @@ public final class RetrofitManager {
                 .baseUrl(BuildConfig.HTTP_BASE)
                 .client(mOkHttpClient) //设置自定义配置的OkHttpClient
                 .addConverterFactory(GsonConverterFactory.create()) //添加json解析
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) //添加RxJava2的适配
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) //添加RxJava2的适配
                 .build();
 
     }

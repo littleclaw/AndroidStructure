@@ -53,11 +53,7 @@ public class NetworkUtils {
      * <p>3.0以下打开设置界面</p>
      */
     public static void openWirelessSettings() {
-        if (android.os.Build.VERSION.SDK_INT > 10) {
-            YcyApplication.getInstance().startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        } else {
-            YcyApplication.getInstance().startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        }
+        YcyApplication.getInstance().startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     /**
@@ -110,9 +106,7 @@ public class NetworkUtils {
         try {
             TelephonyManager tm = (TelephonyManager) YcyApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
             Method getMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("getDataEnabled");
-            if (null != getMobileDataEnabledMethod) {
-                return (boolean) getMobileDataEnabledMethod.invoke(tm);
-            }
+            return (boolean) getMobileDataEnabledMethod.invoke(tm);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,7 +149,7 @@ public class NetworkUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean getWifiEnabled() {
-        WifiManager wifiManager = (WifiManager) YcyApplication.getInstance().getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) YcyApplication.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return wifiManager.isWifiEnabled();
     }
 
@@ -166,7 +160,7 @@ public class NetworkUtils {
      * @param enabled {@code true}: 打开<br>{@code false}: 关闭
      */
     public static void setWifiEnabled( boolean enabled) {
-        WifiManager wifiManager = (WifiManager)YcyApplication.getInstance().getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager)YcyApplication.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (enabled) {
             if (!wifiManager.isWifiEnabled()) {
                 wifiManager.setWifiEnabled(true);

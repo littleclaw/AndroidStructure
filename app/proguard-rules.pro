@@ -16,6 +16,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 -renamesourcefileattribute SourceFile
+-keepclasseswithmembers com.ycy.entity.*
 
 # OKHttp相关
 # JSR 305 annotations are for embedding nullability information.

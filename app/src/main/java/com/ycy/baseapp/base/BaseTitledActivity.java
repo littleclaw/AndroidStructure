@@ -2,6 +2,7 @@ package com.ycy.baseapp.base;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -15,8 +16,9 @@ import android.widget.TextView;
 
 import com.ycy.ui.R;
 
+
 @SuppressLint("Registered")
-public class BaseTitledActivity extends AppCompatActivity implements View.OnClickListener{
+public class BaseTitledActivity extends AppCompatActivity implements View.OnClickListener {
 
     public Activity context;
     private ImageView baseBack, baseRightIcon2, baseRightIcon1;

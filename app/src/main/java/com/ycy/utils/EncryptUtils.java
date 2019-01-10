@@ -8,6 +8,8 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
@@ -16,54 +18,145 @@ import javax.crypto.spec.SecretKeySpec;
 import static com.ycy.utils.ConvertUtils.bytes2HexString;
 import static com.ycy.utils.ConvertUtils.hexString2Bytes;
 
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/2
- *     desc  : 加密解密相关的工具类
- * </pre>
- */
 public class EncryptUtils {
+    private static final String RSA_PUBLIC_KEY = "";
+    private static final String AES_KEY = "OIWYHGVBLAZXU2R6";
 
     private EncryptUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
+
+    /* RSA */
+    public static String encryptByPublicKey(String data, RSAPublicKey publicKey)
+            throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        // 模长
+        int key_len = publicKey.getModulus().bitLength() / 8;
+        // 加密数据长度 <= 模长-11
+        String[] datas = splitString(data, key_len - 11);
+        String mi = "";
+        //如果明文长度大于模长-11则要分组加密
+        for (String s : datas) {
+            mi += bcd2Str(cipher.doFinal(s.getBytes()));
+        }
+        return mi;
+    }
+
+    /**
+     * 私钥解密
+     *
+     * @param data
+     * @param privateKey
+     * @return
+     * @throws Exception
+     */
+    public static String decryptByPrivateKey(String data, RSAPrivateKey privateKey)
+            throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        //模长
+        int key_len = privateKey.getModulus().bitLength() / 8;
+        byte[] bytes = data.getBytes();
+        byte[] bcd = ASCII_To_BCD(bytes, bytes.length);
+        System.err.println(bcd.length);
+        //如果密文长度大于模长则要分组解密
+        String ming = "";
+        byte[][] arrays = splitArray(bcd, key_len);
+        for(byte[] arr : arrays){
+            ming += new String(cipher.doFinal(arr));
+        }
+        return ming;
+    }
+    /**
+     * ASCII码转BCD码
+     *
+     */
+    private static byte[] ASCII_To_BCD(byte[] ascii, int asc_len) {
+        byte[] bcd = new byte[asc_len / 2];
+        int j = 0;
+        for (int i = 0; i < (asc_len + 1) / 2; i++) {
+            bcd[i] = asc_to_bcd(ascii[j++]);
+            bcd[i] = (byte) (((j >= asc_len) ? 0x00 : asc_to_bcd(ascii[j++])) + (bcd[i] << 4));
+        }
+        return bcd;
+    }
+    private static byte asc_to_bcd(byte asc) {
+        byte bcd;
+
+        if ((asc >= '0') && (asc <= '9'))
+            bcd = (byte) (asc - '0');
+        else if ((asc >= 'A') && (asc <= 'F'))
+            bcd = (byte) (asc - 'A' + 10);
+        else if ((asc >= 'a') && (asc <= 'f'))
+            bcd = (byte) (asc - 'a' + 10);
+        else
+            bcd = (byte) (asc - 48);
+        return bcd;
+    }
+    /**
+     * BCD转字符串
+     */
+    private static String bcd2Str(byte[] bytes) {
+        char temp[] = new char[bytes.length * 2], val;
+
+        for (int i = 0; i < bytes.length; i++) {
+            val = (char) (((bytes[i] & 0xf0) >> 4) & 0x0f);
+            temp[i * 2] = (char) (val > 9 ? val + 'A' - 10 : val + '0');
+
+            val = (char) (bytes[i] & 0x0f);
+            temp[i * 2 + 1] = (char) (val > 9 ? val + 'A' - 10 : val + '0');
+        }
+        return new String(temp);
+    }
+
+    private static String[] splitString(String string, int len) {
+        int x = string.length() / len;
+        int y = string.length() % len;
+        int z = 0;
+        if (y != 0) {
+            z = 1;
+        }
+        String[] strings = new String[x + z];
+        String str;
+        for (int i=0; i<x+z; i++) {
+            if (i==x+z-1 && y!=0) {
+                str = string.substring(i*len, i*len+y);
+            }else{
+                str = string.substring(i*len, i*len+len);
+            }
+            strings[i] = str;
+        }
+        return strings;
+    }
+    /**
+     *拆分数组
+     */
+    private static byte[][] splitArray(byte[] data, int len){
+        int x = data.length / len;
+        int y = data.length % len;
+        int z = 0;
+        if(y!=0){
+            z = 1;
+        }
+        byte[][] arrays = new byte[x+z][];
+        byte[] arr;
+        for(int i=0; i<x+z; i++){
+            arr = new byte[len];
+            if(i==x+z-1 && y!=0){
+                System.arraycopy(data, i*len, arr, 0, y);
+            }else{
+                System.arraycopy(data, i*len, arr, 0, len);
+            }
+            arrays[i] = arr;
+        }
+        return arrays;
+    }
+
     /*********************** 哈希加密相关 ***********************/
     /**
-     * MD2加密
-     *
-     * @param data 明文字符串
-     * @return 16进制密文
-     */
-    public static String encryptMD2ToString(String data) {
-        return encryptMD2ToString(data.getBytes());
-    }
-
-    /**
-     * MD2加密
-     *
-     * @param data 明文字节数组
-     * @return 16进制密文
-     */
-    public static String encryptMD2ToString(byte[] data) {
-        return bytes2HexString(encryptMD2(data));
-    }
-
-    /**
-     * MD2加密
-     *
-     * @param data 明文字节数组
-     * @return 密文字节数组
-     */
-    public static byte[] encryptMD2(byte[] data) {
-        return hashTemplate(data, "MD2");
-    }
-
-    /**
      * MD5加密
-     *
      * @param data 明文字符串
      * @return 16进制密文
      */
@@ -206,126 +299,6 @@ public class EncryptUtils {
     }
 
     /**
-     * SHA224加密
-     *
-     * @param data 明文字符串
-     * @return 16进制密文
-     */
-    public static String encryptSHA224ToString(String data) {
-        return encryptSHA224ToString(data.getBytes());
-    }
-
-    /**
-     * SHA224加密
-     *
-     * @param data 明文字节数组
-     * @return 16进制密文
-     */
-    public static String encryptSHA224ToString(byte[] data) {
-        return bytes2HexString(encryptSHA224(data));
-    }
-
-    /**
-     * SHA224加密
-     *
-     * @param data 明文字节数组
-     * @return 密文字节数组
-     */
-    public static byte[] encryptSHA224(byte[] data) {
-        return hashTemplate(data, "SHA224");
-    }
-
-    /**
-     * SHA256加密
-     *
-     * @param data 明文字符串
-     * @return 16进制密文
-     */
-    public static String encryptSHA256ToString(String data) {
-        return encryptSHA256ToString(data.getBytes());
-    }
-
-    /**
-     * SHA256加密
-     *
-     * @param data 明文字节数组
-     * @return 16进制密文
-     */
-    public static String encryptSHA256ToString(byte[] data) {
-        return bytes2HexString(encryptSHA256(data));
-    }
-
-    /**
-     * SHA256加密
-     *
-     * @param data 明文字节数组
-     * @return 密文字节数组
-     */
-    public static byte[] encryptSHA256(byte[] data) {
-        return hashTemplate(data, "SHA256");
-    }
-
-    /**
-     * SHA384加密
-     *
-     * @param data 明文字符串
-     * @return 16进制密文
-     */
-    public static String encryptSHA384ToString(String data) {
-        return encryptSHA384ToString(data.getBytes());
-    }
-
-    /**
-     * SHA384加密
-     *
-     * @param data 明文字节数组
-     * @return 16进制密文
-     */
-    public static String encryptSHA384ToString(byte[] data) {
-        return bytes2HexString(encryptSHA384(data));
-    }
-
-    /**
-     * SHA384加密
-     *
-     * @param data 明文字节数组
-     * @return 密文字节数组
-     */
-    public static byte[] encryptSHA384(byte[] data) {
-        return hashTemplate(data, "SHA384");
-    }
-
-    /**
-     * SHA512加密
-     *
-     * @param data 明文字符串
-     * @return 16进制密文
-     */
-    public static String encryptSHA512ToString(String data) {
-        return encryptSHA512ToString(data.getBytes());
-    }
-
-    /**
-     * SHA512加密
-     *
-     * @param data 明文字节数组
-     * @return 16进制密文
-     */
-    public static String encryptSHA512ToString(byte[] data) {
-        return bytes2HexString(encryptSHA512(data));
-    }
-
-    /**
-     * SHA512加密
-     *
-     * @param data 明文字节数组
-     * @return 密文字节数组
-     */
-    public static byte[] encryptSHA512(byte[] data) {
-        return hashTemplate(data, "SHA512");
-    }
-
-    /**
      * hash加密模板
      *
      * @param data      数据
@@ -339,225 +312,6 @@ public class EncryptUtils {
             md.update(data);
             return md.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * HmacMD5加密
-     *
-     * @param data 明文字符串
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacMD5ToString(String data, String key) {
-        return encryptHmacMD5ToString(data.getBytes(), key.getBytes());
-    }
-
-    /**
-     * HmacMD5加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacMD5ToString(byte[] data, byte[] key) {
-        return bytes2HexString(encryptHmacMD5(data, key));
-    }
-
-    /**
-     * HmacMD5加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 密文字节数组
-     */
-    public static byte[] encryptHmacMD5(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacMD5");
-    }
-
-    /**
-     * HmacSHA1加密
-     *
-     * @param data 明文字符串
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA1ToString(String data, String key) {
-        return encryptHmacSHA1ToString(data.getBytes(), key.getBytes());
-    }
-
-    /**
-     * HmacSHA1加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA1ToString(byte[] data, byte[] key) {
-        return bytes2HexString(encryptHmacSHA1(data, key));
-    }
-
-    /**
-     * HmacSHA1加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 密文字节数组
-     */
-    public static byte[] encryptHmacSHA1(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA1");
-    }
-
-    /**
-     * HmacSHA224加密
-     *
-     * @param data 明文字符串
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA224ToString(String data, String key) {
-        return encryptHmacSHA224ToString(data.getBytes(), key.getBytes());
-    }
-
-    /**
-     * HmacSHA224加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA224ToString(byte[] data, byte[] key) {
-        return bytes2HexString(encryptHmacSHA224(data, key));
-    }
-
-    /**
-     * HmacSHA224加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 密文字节数组
-     */
-    public static byte[] encryptHmacSHA224(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA224");
-    }
-
-    /**
-     * HmacSHA256加密
-     *
-     * @param data 明文字符串
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA256ToString(String data, String key) {
-        return encryptHmacSHA256ToString(data.getBytes(), key.getBytes());
-    }
-
-    /**
-     * HmacSHA256加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA256ToString(byte[] data, byte[] key) {
-        return bytes2HexString(encryptHmacSHA256(data, key));
-    }
-
-    /**
-     * HmacSHA256加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 密文字节数组
-     */
-    public static byte[] encryptHmacSHA256(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA256");
-    }
-
-    /**
-     * HmacSHA384加密
-     *
-     * @param data 明文字符串
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA384ToString(String data, String key) {
-        return encryptHmacSHA384ToString(data.getBytes(), key.getBytes());
-    }
-
-    /**
-     * HmacSHA384加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA384ToString(byte[] data, byte[] key) {
-        return bytes2HexString(encryptHmacSHA384(data, key));
-    }
-
-    /**
-     * HmacSHA384加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 密文字节数组
-     */
-    public static byte[] encryptHmacSHA384(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA384");
-    }
-
-    /**
-     * HmacSHA512加密
-     *
-     * @param data 明文字符串
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA512ToString(String data, String key) {
-        return encryptHmacSHA512ToString(data.getBytes(), key.getBytes());
-    }
-
-    /**
-     * HmacSHA512加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 16进制密文
-     */
-    public static String encryptHmacSHA512ToString(byte[] data, byte[] key) {
-        return bytes2HexString(encryptHmacSHA512(data, key));
-    }
-
-    /**
-     * HmacSHA512加密
-     *
-     * @param data 明文字节数组
-     * @param key  秘钥
-     * @return 密文字节数组
-     */
-    public static byte[] encryptHmacSHA512(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA512");
-    }
-
-    /**
-     * Hmac加密模板
-     *
-     * @param data      数据
-     * @param key       秘钥
-     * @param algorithm 加密算法
-     * @return 密文字节数组
-     */
-    private static byte[] hmacTemplate(byte[] data, byte[] key, String algorithm) {
-        if (data == null || data.length == 0 || key == null || key.length == 0) return null;
-        try {
-            SecretKeySpec secretKey = new SecretKeySpec(key, algorithm);
-            Mac mac = Mac.getInstance(algorithm);
-            mac.init(secretKey);
-            return mac.doFinal(data);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
         }
@@ -727,6 +481,13 @@ public class EncryptUtils {
     private static final String AES_Algorithm      = "AES";
 
 
+    public static String decryptAESwithDefaultKey(String data){
+        return new String(decryptBase64AES(data.getBytes(), AES_KEY.getBytes()));
+    }
+
+    public static String encryptAESwithDefaultKey(String data){
+        return new String(encryptAES2Base64(data.getBytes(), AES_KEY.getBytes()));
+    }
     /**
      * AES加密后转为Base64编码
      *

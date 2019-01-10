@@ -1,22 +1,16 @@
 package com.ycy.entity;
 
+import com.ycy.utils.StringUtils;
+
 public class UserInfoBean {
-    private String userName;
-    private String currency;
+    private String phone;
+    private String nickName;
+    private String avatarUrl;
+    private String balanceRMB;
+    private String balanceDKB;
 
-    public String getUserName() {
-        return userName;
+    public boolean isLogin(){
+        return !StringUtils.isEmpty(phone);
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
 }

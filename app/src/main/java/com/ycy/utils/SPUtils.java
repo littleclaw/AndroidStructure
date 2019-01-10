@@ -3,33 +3,48 @@ package com.ycy.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.ycy.baseapp.base.YcyApplication;
+import com.ycy.entity.UserInfoBean;
 
 import java.util.Map;
 
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/2
- *     desc  : SP相关工具类
- * </pre>
- */
 public class SPUtils {
 
     private SharedPreferences        sp;
     private SharedPreferences.Editor editor;
+    public static final String SP_NAME_USER_INFO = "userInfo";
+    public static final String SP_USER_INFO_KEY = "userInfo_encrypted";
 
-    /**
-     * SPUtils构造函数
-     * <p>在Application中初始化</p>
-     *
-     * @param spName  spName
-     */
+    public static final String SP_NAME_TASK_RECORD = "taskRecord";
+
     public SPUtils(String spName) {
         sp = YcyApplication.getInstance().getSharedPreferences(spName, Context.MODE_PRIVATE);
         editor = sp.edit();
         editor.apply();
+    }
+
+    public static boolean isLogin(){
+        boolean result = false;
+        SPUtils userInfoSP = new SPUtils(SPUtils.SP_NAME_USER_INFO);
+        String userInfo = userInfoSP.getString(SPUtils.SP_USER_INFO_KEY, "");
+        if(!StringUtils.isEmpty(userInfo)){
+            Gson gson = new Gson();
+            UserInfoBean userInfoBean = gson.fromJson(userInfo, UserInfoBean.class);
+            result = userInfoBean.isLogin();
+        }
+        return result;
+    }
+
+    public static void putUserInfo(String userInfoJson){
+        SPUtils sp = new SPUtils(SP_NAME_USER_INFO);
+        sp.putString(SP_USER_INFO_KEY, userInfoJson);
+    }
+
+    public static UserInfoBean getSPUserInfo(){
+        SPUtils sp = new SPUtils(SP_NAME_USER_INFO);
+        return new Gson().fromJson(sp.getString(SP_USER_INFO_KEY, ""), UserInfoBean.class);
     }
 
     /**
