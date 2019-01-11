@@ -3,10 +3,9 @@ package com.ycy.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.ycy.baseapp.base.YcyApplication;
-import com.ycy.entity.UserInfoBean;
+import com.ycy.entity.UserInfo;
 
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public class SPUtils {
         String userInfo = userInfoSP.getString(SPUtils.SP_USER_INFO_KEY, "");
         if(!StringUtils.isEmpty(userInfo)){
             Gson gson = new Gson();
-            UserInfoBean userInfoBean = gson.fromJson(userInfo, UserInfoBean.class);
+            UserInfo userInfoBean = gson.fromJson(userInfo, UserInfo.class);
             result = userInfoBean.isLogin();
         }
         return result;
@@ -42,9 +41,9 @@ public class SPUtils {
         sp.putString(SP_USER_INFO_KEY, userInfoJson);
     }
 
-    public static UserInfoBean getSPUserInfo(){
+    public static UserInfo getSPUserInfo(){
         SPUtils sp = new SPUtils(SP_NAME_USER_INFO);
-        return new Gson().fromJson(sp.getString(SP_USER_INFO_KEY, ""), UserInfoBean.class);
+        return new Gson().fromJson(sp.getString(SP_USER_INFO_KEY, ""), UserInfo.class);
     }
 
     /**

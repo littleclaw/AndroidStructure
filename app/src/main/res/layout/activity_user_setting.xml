@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ycy.ui.user.UserSettingActivity">
+
+    <RelativeLayout
+        android:id="@+id/pick_avatar_rl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/widget_horizontal_margin"
+        android:paddingRight="@dimen/widget_horizontal_margin"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="头像"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <ImageView
+            android:id="@+id/arrow_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/back"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
+        <com.ycy.widget.CircleImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toLeftOf="@id/arrow_avatar"
+            android:layout_toStartOf="@id/arrow_avatar"
+            android:layout_marginRight="@dimen/widget_horizontal_margin"
+            android:src="@mipmap/ic_launcher"/>
+    </RelativeLayout>
+
+    <View style="@style/divider"/>
+
+    <RelativeLayout
+        android:id="@+id/change_name_rl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/widget_horizontal_margin"
+        android:paddingRight="@dimen/widget_horizontal_margin"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="昵称"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <ImageView
+            android:id="@+id/arrow_nick_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/back"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:id="@+id/user_setting_name_tv"
+            android:text="昵称"
+            android:layout_toLeftOf="@id/arrow_nick_name"
+            android:layout_toStartOf="@id/arrow_nick_name"
+            android:layout_marginRight="@dimen/widget_horizontal_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <View style="@style/divider"/>
+    <RelativeLayout
+        android:id="@+id/set_pwd_rl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/widget_horizontal_margin"
+        android:paddingRight="@dimen/widget_horizontal_margin"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密码修改"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/back"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View style="@style/divider"/>
+
+    <Button
+        android:id="@+id/user_setting_logout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="@dimen/widget_horizontal_margin"
+        android:layout_marginRight="@dimen/widget_horizontal_margin"
+        android:text="退出登录"/>
+
+</LinearLayout>

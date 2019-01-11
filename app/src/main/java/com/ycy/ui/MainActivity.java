@@ -3,23 +3,19 @@ package com.ycy.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.ycy.baseapp.base.BaseActivity;
 import com.ycy.ui.guide.GuideFragment;
 import com.ycy.ui.main.MainPageFragment;
 import com.ycy.ui.tasks.TaskFragment;
-import com.ycy.ui.user.LoginActivity;
 import com.ycy.ui.user.UserFragment;
-import com.ycy.utils.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -39,6 +35,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
         initViews();
         setUpPagerView();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     private void initViews() {
