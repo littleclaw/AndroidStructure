@@ -43,7 +43,11 @@ public class SPUtils {
 
     public static UserInfo getSPUserInfo(){
         SPUtils sp = new SPUtils(SP_NAME_USER_INFO);
-        return new Gson().fromJson(sp.getString(SP_USER_INFO_KEY, ""), UserInfo.class);
+        UserInfo userInfo = new Gson().fromJson(sp.getString(SP_USER_INFO_KEY, ""), UserInfo.class);
+        if(userInfo == null){
+            userInfo = new UserInfo();
+        }
+        return userInfo;
     }
 
     /**

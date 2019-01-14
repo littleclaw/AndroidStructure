@@ -52,6 +52,8 @@ public final class UserFragment extends Fragment {
         mBalanceDetailBtn = v.findViewById(R.id.balance_detail_btn);
         mCashDetailBtn = v.findViewById(R.id.cash_btn);
         mCashNowBtn = v.findViewById(R.id.cash_now_btn);
+
+        initOnClickListener();
     }
 
     private void initOnClickListener(){

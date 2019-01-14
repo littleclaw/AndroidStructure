@@ -2,6 +2,7 @@ package com.ycy.baseapp.base;
 
 import android.app.Application;
 
+import com.ycy.ui.BuildConfig;
 import com.ycy.utils.CrashUtils;
 
 public class YcyApplication extends Application {
@@ -15,7 +16,9 @@ public class YcyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         ycyApplication = this;
-        CrashUtils.getInstance().init();
+        if(!BuildConfig.DEBUG) {
+            CrashUtils.getInstance().init();
+        }
     }
 
 }
